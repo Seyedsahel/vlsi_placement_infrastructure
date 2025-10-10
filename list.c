@@ -28,7 +28,6 @@ struct Node* createNode(void* data) {
     newNode->next = NULL;
     return newNode;
 }
-
 //funk to add node at first of list
 void list_add_front(List *list, Node *node){
     if (list->head == NULL) {
@@ -58,9 +57,7 @@ void list_add_back(List *list, Node *node){
 //func to add node at the end of the list
 void list_insert_at(List *list, Node *node, size_t pos) {
     if (pos > list->size) {
-        printf("Position out of range!\n");
-        return;
-    }
+          }
 
     if (pos == 0) {
         list_add_front(list, node);
@@ -81,4 +78,32 @@ void list_insert_at(List *list, Node *node, size_t pos) {
     current->next = node;
 
     list->size++;
+}
+void list_print(List *list) {
+    Node *current = list->head;  
+    while (current != NULL) {
+        printf("%d", *(int*)current->data);
+        current = current->next;
+    }
+}
+
+int main() {
+    List *list = list_create();
+
+    int *a = malloc(sizeof(int));
+    *a = 10;
+    int *b = malloc(sizeof(int));
+    *b = 20;
+    int *c = malloc(sizeof(int));
+    *c = 30;
+   
+    Node *n1 = createNode(a);
+    Node *n2 = createNode(b);
+    Node *n3 = createNode(c);
+    list_add_back(list, n1);
+    list_add_front(list,n2);
+    list_insert_at(list,n3,1);
+    list_print(list);
+
+    return 0;
 }
