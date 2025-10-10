@@ -41,4 +41,18 @@ void list_add_front(List *list, Node *node){
     list->size++;
 
 }
+//func to add node at the end of the list
+void list_add_back(List *list, Node *node){
+
+    if (list->head == NULL) {
+        list->head = list->tail = node;
+        node->next = NULL;
+    } else {
+        list->tail->next = node;
+        list->tail = node;
+        node->next = NULL;
+        
+    }
+    list->size++;
+}
 
