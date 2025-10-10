@@ -25,6 +25,18 @@ typedef struct {
     float height;
     int row_num;
     Net* net;
-    
+
 } Node;
 
+typedef struct 
+{
+    //metodes:
+    //WL_cal for calculating wire length with hpwl algo
+    //placer for placing algorithm
+    // sa for simmulated anealing
+    // reader with input: netlist and output: nlist(list of nodes) and tlist(list of nets)
+    //parameters:
+//int row_num;
+// nlist: list of nodes
+// tlist: list of nets
+} Place;
