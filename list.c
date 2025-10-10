@@ -28,3 +28,17 @@ struct Node* createNode(void* data) {
     newNode->next = NULL;
     return newNode;
 }
+
+//funk to add node at first of list
+void list_add_front(List *list, Node *node){
+    if (list->head == NULL) {
+        list->head = list->tail = node;
+        node->next = NULL;
+    } else {
+        node->next = list->head;
+        list->head = node;
+    }
+    list->size++;
+
+}
+
