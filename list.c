@@ -55,4 +55,30 @@ void list_add_back(List *list, Node *node){
     }
     list->size++;
 }
+//func to add node at the end of the list
+void list_insert_at(List *list, Node *node, size_t pos) {
+    if (pos > list->size) {
+        printf("Position out of range!\n");
+        return;
+    }
 
+    if (pos == 0) {
+        list_add_front(list, node);
+        return;
+    }
+
+    if (pos == list->size) {
+        list_add_back(list, node);
+        return;
+    }
+
+    Node *current = list->head;
+    for (size_t i = 0; i < pos - 1; i++) {
+        current = current->next;
+    }
+
+    node->next = current->next;
+    current->next = node;
+
+    list->size++;
+}
