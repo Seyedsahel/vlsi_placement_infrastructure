@@ -81,8 +81,10 @@ void list_insert_at(List *list, Node *node, size_t pos) {
 }
 void list_print(List *list) {
     Node *current = list->head;  
+        printf("%d %d \n", *(int*)current->data,*(int*)current->next->data);
+
     while (current != NULL) {
-        printf("%d", *(int*)current->data);
+        printf("%d %d \n", *(int*)current->data,*(int*)current->next->data);
         current = current->next;
     }
 }
