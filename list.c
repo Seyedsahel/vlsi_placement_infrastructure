@@ -64,6 +64,31 @@ list copy_list(list* l){
     return new_list;
 
 }
+void set_element(list* l, int elidx, void* value){
+      if (elidx < 0 || (size_t)elidx >= l->index) {
+        fprintf(stderr, "Index out of range!\n");
+        return;
+    }
+
+    void* dest = (char*)l->data + (elidx * l->elsize);
+
+    memcpy(dest, value, l->elsize);
+}
+
+void swap(list* l, int idx1, int idx2){
+    if(idx1 < 0 || (size_t)idx1 >= l->index || idx2 < 0 || (size_t)idx2 >= l->index){
+        fprintf(stderr, "Index out of range!\n");
+        return;
+    }
+    void* ptr1 = l->data + idx1 * l->elsize;
+    void* ptr2 = l->data + idx2 * l->elsize;
+    void* tmp = malloc(l->elsize);
+    memcpy(tmp,ptr1,l->elsize);
+    memcpy(ptr1,ptr2,l->elsize);
+    memcpy(ptr2,tmp,l->elsize);
+    free(tmp);
+}
+
 typedef struct {
     char name[20];
     int age;
@@ -96,10 +121,21 @@ int main() {
             free(p);
         }
     }
+    Person p4 = {"sahel", 21};
+    set_element(&people,1,&p4);
+    Person* p = (Person*)get_element(&people, 1);
+    printf("set res %d: %s (%d)\n", 1, p->name, p->age);
 
-
-
+    swap(&people,0,1);
+     for (int i = 0; i < people.index; i++) {
+        Person* p = (Person*)get_element(&people, i);
+        if (p) {
+            printf("Person %d: %s (%d)\n", i, p->name, p->age);
+            free(p);
+        }
+    }
 
     free(people.data);
+    free(copy_people.data);
     return 0;
 }
