@@ -89,6 +89,25 @@ void swap(list* l, int idx1, int idx2){
     free(tmp);
 }
 
+void delete_element(list* l, int idx) {
+
+    if (idx < 0 || (size_t)idx >= l->index) {
+        fprintf(stderr, "Index out of range!\n");
+        return;
+    }
+
+    char* ptr = (char*)l->data + idx * l->elsize;
+
+    size_t bytes_to_move = (l->index - idx - 1) * l->elsize;
+
+    if (bytes_to_move > 0) {
+        memmove(ptr, ptr + l->elsize, bytes_to_move);
+    }
+
+    l->index--;
+}
+
+
 typedef struct {
     char name[20];
     int age;
@@ -126,8 +145,17 @@ int main() {
     Person* p = (Person*)get_element(&people, 1);
     printf("set res %d: %s (%d)\n", 1, p->name, p->age);
 
+
     swap(&people,0,1);
      for (int i = 0; i < people.index; i++) {
+        Person* p = (Person*)get_element(&people, i);
+        if (p) {
+            printf("Person %d: %s (%d)\n", i, p->name, p->age);
+            free(p);
+        }
+    }
+    delete_element(&people,1);
+      for (int i = 0; i < people.index; i++) {
         Person* p = (Person*)get_element(&people, i);
         if (p) {
             printf("Person %d: %s (%d)\n", i, p->name, p->age);
