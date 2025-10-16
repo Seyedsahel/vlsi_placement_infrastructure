@@ -15,15 +15,9 @@ void* get_element(list* l,int elidx) {
         return NULL;
     }
 
-    void* sour = (char*)l->data + (elidx * l->elsize);
-    void* dest = malloc(l->elsize);
-    if (!dest) {
-        fprintf(stderr, "Memory allocation failed!\n");
-        return NULL;
-    }
-
-    memcpy(dest, sour, l->elsize);
-    return dest;
+    void* element = (char*)l->data + (elidx * l->elsize);
+   
+    return element;
 }
 
 void add_element(list* l, void* element) {
@@ -55,7 +49,22 @@ list initial_list(size_t lsize,size_t elsize){
 
     return l;
 }
-// void* copy_element(list* l, int index){}
+void* copy_element(list* l, int elidx){
+     if (elidx < 0 || (size_t)elidx >= l->index) {
+        fprintf(stderr, "Index out of range!\n");
+        return NULL;
+    }
+
+    void* sour = (char*)l->data + (elidx * l->elsize);
+    void* dest = malloc(l->elsize);
+    if (!dest) {
+        fprintf(stderr, "Memory allocation failed!\n");
+        return NULL;
+    }
+
+    memcpy(dest, sour, l->elsize);
+    return dest;
+}
 
 list copy_list(list* l){
     list new_list = initial_list(l->size,l->elsize);
