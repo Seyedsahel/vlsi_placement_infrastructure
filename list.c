@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct list{
     size_t elsize;
@@ -73,15 +74,17 @@ list copy_list(list* l){
     return new_list;
 
 }
-void set_element(list* l, int elidx, void* value){
+bool set_element(list* l, int elidx, void* value){
       if (elidx < 0 || (size_t)elidx >= l->index) {
         fprintf(stderr, "Index out of range!\n");
-        return;
+        return false;
     }
 
     void* dest = (char*)l->data + (elidx * l->elsize);
 
-    memcpy(dest, value, l->elsize);
+    void* test = memcpy(dest, value, l->elsize);
+    if(test==NULL) return false;
+    return true;
 }
 
 void swap(list* l, int idx1, int idx2){
