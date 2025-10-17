@@ -37,19 +37,26 @@ void add_element(list* l, void* element) {
     l->index++;
 }
 
-list initial_list(size_t lsize,size_t elsize){
-    list l;
-    l.elsize = elsize;
-    l.size = lsize;
-    l.index = 0;
-    l.data = malloc(l.size * l.elsize);
-    if (!l.data) {
-            fprintf(stderr, "Memory allocation failed!\n");
-            
-        }
+list* initial_list(size_t lsize, size_t elsize) {
+    list* l = malloc(sizeof(list));
+    if (!l) {
+        fprintf(stderr, "Memory allocation failed for list!\n");
+        return NULL;
+    }
+
+    l->elsize = elsize;
+    l->size = lsize;
+    l->index = 0;
+    l->data = malloc(l->size * l->elsize);
+    if (!l->data) {
+        fprintf(stderr, "Memory allocation failed for data!\n");
+        free(l);
+        return NULL;
+    }
 
     return l;
 }
+
 void* copy_element(list* l, int elidx){
      if (elidx < 0 || (size_t)elidx >= l->index) {
         fprintf(stderr, "Index out of range!\n");
@@ -67,13 +74,13 @@ void* copy_element(list* l, int elidx){
     return dest;
 }
 
-list copy_list(list* l){
-    list new_list = initial_list(l->size,l->elsize);
-    new_list.index=l->index;
-    memcpy(new_list.data,l->data,l->size*l->elsize);
+list* copy_list(list* l) {
+    list* new_list = initial_list(l->size, l->elsize);
+    new_list->index = l->index;
+    memcpy(new_list->data, l->data, l->size * l->elsize);
     return new_list;
-
 }
+
 bool set_element(list* l, int elidx, void* value){
       if (elidx < 0 || (size_t)elidx >= l->index) {
         fprintf(stderr, "Index out of range!\n");
@@ -126,56 +133,56 @@ typedef struct {
 } Person;
 
 int main() {
-    list people = initial_list(4,sizeof(Person));
+    list* people = initial_list(4,sizeof(Person));
     Person p1 = {"Alice", 25};
     Person p2 = {"Bob", 30};
     Person p3 = {"Charlie", 28};
 
-    add_element(&people, &p1);
-    add_element(&people, &p2);
-    add_element(&people, &p3); 
+    add_element(people, &p1);
+    add_element(people, &p2);
+    add_element(people, &p3); 
 
-    for (int i = 0; i < people.index; i++) {
-        Person* p = (Person*)get_element(&people, i);
+    for (int i = 0; i < people->index; i++) {
+        Person* p = (Person*)get_element(people, i);
         if (p) {
             printf("Person %d: %s (%d)\n", i, p->name, p->age);
-            free(p);
+          
         }
     }
 
-    list copy_people = copy_list(&people);
+    list* copy_people = copy_list(people);
 
-    for (int i = 0; i < people.index; i++) {
-    Person* p = (Person*)get_element(&copy_people, i);
+    for (int i = 0; i < people->index; i++) {
+    Person* p = (Person*)get_element(copy_people, i);
         if (p) {
             printf("Person_copy %d: %s (%d)\n", i, p->name, p->age);
-            free(p);
+           
         }
     }
     Person p4 = {"sahel", 21};
-    set_element(&people,1,&p4);
-    Person* p = (Person*)get_element(&people, 1);
+    set_element(people,1,&p4);
+    Person* p = (Person*)get_element(people, 1);
     printf("set res %d: %s (%d)\n", 1, p->name, p->age);
 
 
-    swap(&people,0,1);
-     for (int i = 0; i < people.index; i++) {
-        Person* p = (Person*)get_element(&people, i);
+    swap(people,0,1);
+     for (int i = 0; i < people->index; i++) {
+        Person* p = (Person*)get_element(people, i);
         if (p) {
             printf("Person %d: %s (%d)\n", i, p->name, p->age);
-            free(p);
+          
         }
     }
-    delete_element(&people,1);
-      for (int i = 0; i < people.index; i++) {
-        Person* p = (Person*)get_element(&people, i);
+    delete_element(people,1);
+      for (int i = 0; i < people->index; i++) {
+        Person* p = (Person*)get_element(people, i);
         if (p) {
             printf("Person %d: %s (%d)\n", i, p->name, p->age);
-            free(p);
+           
         }
     }
 
-    free(people.data);
-    free(copy_people.data);
+    free(people->data);
+    free(copy_people->data);
     return 0;
 }
