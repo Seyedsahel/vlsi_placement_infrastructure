@@ -34,14 +34,19 @@ void* get_element(list* l, int elidx) {
 
 void add_element(list* l, void* element) {
     if (l->index == l->size) {
-        size_t new_size = (l->size == 0) ? 1 : l->size * 2;
+        size_t new_size = l->size * 2;
         void* new_data = realloc(l->data, new_size * l->elsize);
         if (!new_data) {
             fprintf(stderr, "Memory allocation failed!\n");
             return;
         }
+        printf("realloc\n");
+        printf("pre data%p\n",l->data);
+
         l->data = new_data;
         l->size = new_size;
+        printf("postdate%p\n",l->data);
+
     }
 
     memcpy((char*)l->data + (l->index * l->elsize), element, l->elsize);
